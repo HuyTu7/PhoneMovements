@@ -1,0 +1,15 @@
+<resources>
+        <string name="menu_title">Settings</string>
+        <string name="app_name">PhoneMovements</string>
+        <string name="hello_world">Hello world!</string>
+        <string name="title">Linear and Angular Displacement Measurement</string>
+        <string name="measurement_button">Begin</string>
+        <string name="end_button">End</string>
+        <string name="reset_button">Reset</string>
+        <string name="save_button">Save</string>
+        <string name="accelormeter">Linear Acceleration:</string>
+        <string name="angular_v">Angular Velocity:</string>
+        <string name="linear_d">Linear Displacement:</string>
+        <string name="angular_d">Angular Displacement:</string>
+        <string name="menu_settings">Settings</string>
+</resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="22.0.1"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-22.2.1_e25f404b77bfac25d02d9782380697255ee7b9ff.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\libs\opencsv-3.8.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="22.0.1"
+        sha1="248d4d05fe253a02a05601978f7de1305b8a961e">
+        <dex dex="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\build\intermediates\pre-dexed\debug\opencsv-3.8_5f4792b9ab9e1b08743e5eb8b8aa4a287290300b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1_6b48456601e8242d517e833e6e41405199e5c5d1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Mugetsu\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1_a9b94c08160dcc8f8346cfe38653f817135db54f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="C:\Users\Mugetsu\AndroidStudioProjects\PhoneMM\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-22.2.1_599f494a8e126eab62e92c83db25bcdc5717c3a6.jar" />
+    </item>
+
+</items>
