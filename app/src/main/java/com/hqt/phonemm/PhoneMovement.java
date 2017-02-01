@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -41,10 +42,11 @@ public class PhoneMovement extends Activity implements SensorEventListener, View
     private ArrayList<Float>[] angularV = (ArrayList<Float>[]) new ArrayList[3];
     private boolean flag = false;
     private ArrayList<Float>[] time = (ArrayList<Float>[]) new ArrayList[2];
-    private float[] lV = new float[3];
+    private float[] lV = {0, 0, 0};
     private float[] g = new float[3];
-    private float[] aV = new float[3];
-    private long[] previousT = new long[2];
+    private float[] aV = {0, 0, 0};
+    private float[] count = {0, 0};
+    private long[] previousT = new long[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,15 @@ public class PhoneMovement extends Activity implements SensorEventListener, View
         //gravity[1].add((float) 0);
         //gravity[2].add((float) 0);
         //time.add((long)0);
+        count[0] = 0;
+        count[1] = 0;
+        previousT = new long[2];
+        lV[0] = 0;
+        lV[1] = 0;
+        lV[2] = 0;
+        aV[0] = 0;
+        aV[1] = 0;
+        aV[2] = 0;
     }
 
 
@@ -124,9 +135,13 @@ public class PhoneMovement extends Activity implements SensorEventListener, View
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
+            return;
+
         long[] current = new long[2];
-        float entry;
-        float rate;
+        float[] entry = {0, 0};
+        float[] dt = {0, 0};
+        float[] rate = {0, 0};
         synchronized (this) {
             //if(flag) {
             switch (event.sensor.getType()) {
@@ -141,16 +156,20 @@ public class PhoneMovement extends Activity implements SensorEventListener, View
                             gravity[2].add(g[2]);
                         }
                         break;*/
+
                 case Sensor.TYPE_LINEAR_ACCELERATION:
                     if (flag) {
-                        current[0] = System.currentTimeMillis();
-                        entry = time[0].get(time[0].size()-1) + (float)(current[0] - previousT[0])/((float)1000);
-                        rate = time[0].get(time[0].size()-1)/entry;
-                        lV = lowPass(event.values.clone(), lV.clone(), rate);
-                        time[0].add(entry);
+                        current[0] = System.nanoTime();
+                        entry[0] = (float)(current[0] - previousT[0])/(1000000000.0f);
+                        dt[0] = 1.0f / ((count[0]++) / entry[0]);
 
-
-                        previousT[0] = current[0];
+                        rate[0] = 0.18f/(0.18f + dt[0]);
+                        if(count[0] > 5) {
+                            lV = lowPass(event.values.clone(), lV, rate[0]);
+                        }
+                        Log.d("stupid", "count[0]: " + Float.toString(count[0]));
+                        time[0].add(entry[0]);
+                        //previousT[0] = current[0];
                         linearA[0].add(lV[0]);
                         linearA[1].add(lV[1]);
                         linearA[2].add(lV[2]);
@@ -159,13 +178,55 @@ public class PhoneMovement extends Activity implements SensorEventListener, View
                             + " Y= " + Float.toString(linearA[1].get(linearA[1].size() - 1))
                             + " Z= " + Float.toString(linearA[2].get(linearA[2].size() - 1)));
                     break;
+               /*
+                case Sensor.TYPE_ACCELEROMETER:
+                    if (flag) {
+                        current[0] = System.nanoTime();
+                        entry[0] = (float)(current[0] - previousT[0])/(1000000000.0f);
+                        dt[0] = 1.0f / ((count[0]++) / entry[0]);
+
+                        rate[0] = 0.18f/(0.18f + dt[0]);
+
+                        float[] gravity = {0,0,0};
+
+                        // Isolate the force of gravity with the low-pass filter.
+                        //lV = lowPass(event.values.clone(), lV, rate[0]);
+                        lV[0] = rate[0] * gravity[0] + (1.0f - rate[0]) * event.values[0];
+                        lV[1] = rate[0] * gravity[1] + (1.0f - rate[0]) * event.values[1];
+                        lV[2] = rate[0] * gravity[2] + (1.0f - rate[0]) * event.values[2];
+
+                        // Remove the gravity contribution with the high-pass filter.
+                        lV[0] = event.values[0] - lV[0];
+                        lV[1] = event.values[1] - lV[1];
+                        lV[2] = event.values[2] - lV[2];
+
+                        time[0].add(entry[0]);
+                        linearA[0].add(lV[0]);
+                        linearA[1].add(lV[1]);
+                        linearA[2].add(lV[2]);
+                    }
+                    linear_v.setText("Linear Acceleration: X= " + Float.toString(linearA[0].get(linearA[0].size() - 1))
+                            + " Y= " + Float.toString(linearA[1].get(linearA[1].size() - 1))
+                            + " Z= " + Float.toString(linearA[2].get(linearA[2].size() - 1)));
+                    break;
+                    */
                 case Sensor.TYPE_GYROSCOPE:
                     if (flag) {
-                        aV = lowPass(event.values.clone(), aV, (float) (1 - 0.25));
-                        current[1] = System.currentTimeMillis();
-                        entry = (float)(current[1] - previousT[1])/((float)1000);
-                        time[1].add(entry + time[1].get(time[1].size()-1));
-                        previousT[1] = current[1];
+                        //aV = lowPass(event.values.clone(), aV, (float) (1 - 0.25));
+                        current[1] = System.nanoTime();
+                        //entry = (float)(current[1] - previousT[1])/((float)1000);
+                        //time[1].add(entry + time[1].get(time[1].size()-1));
+                        entry[1] = (float)(current[1] - previousT[1])/(1000000000.0f);
+                        dt[1] = 1.0f / ((count[1]++) / entry[1]);
+                        Log.d("stupid", "count[1]: " + Float.toString(count[1]));
+                        rate[1] = 0.18f/(0.18f + dt[1]);
+                        //if(count[1] > 5) {
+                        aV = lowPass(event.values.clone(), aV, rate[1]);
+                        //}
+                        //float[] lv_result = new float[3];
+                        //System.arraycopy();
+                        time[1].add(entry[1]);
+                        //previousT[1] = current[1];
                         angularV[0].add(aV[0]);
                         angularV[1].add(aV[1]);
                         angularV[2].add(aV[2]);
@@ -242,7 +303,7 @@ public class PhoneMovement extends Activity implements SensorEventListener, View
     }
 
     protected float[] lowPass(float[] input, float[] output, float rate) {
-        if (output == null) {
+        if (output[0] == 0 && output[1] == 0 && output[2] == 0) {
             return input;
         }
         for (int i = 0; i < input.length; i++) {
@@ -299,7 +360,7 @@ public class PhoneMovement extends Activity implements SensorEventListener, View
                 mEnd.setEnabled(true);
                 mSave.setEnabled(false);
                 mReset.setEnabled(false);
-                startT = System.currentTimeMillis();
+                startT = System.nanoTime();
                 previousT[0] = startT;
                 previousT[1] = startT;
                 mSensorManager.registerListener(this, accSensor, SensorManager.SENSOR_DELAY_NORMAL);
